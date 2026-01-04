@@ -12,10 +12,12 @@ dtype = {
     "PULocationID": "Int64",
     "DOLocationID": "Int64",
     "payment_type": "Int64",
+    "trip_type": "Int64",
     "fare_amount": "float64",
     "extra": "float64",
     "mta_tax": "float64",
     "tip_amount": "float64",
+    "ehail_fee": "float64",
     "tolls_amount": "float64",
     "improvement_surcharge": "float64",
     "total_amount": "float64",
@@ -23,8 +25,8 @@ dtype = {
 }
 
 parse_dates = [
-    "tpep_pickup_datetime",
-    "tpep_dropoff_datetime"
+    "lpep_pickup_datetime",
+    "lpep_dropoff_datetime"
 ]
 
 @click.command()
@@ -36,12 +38,12 @@ parse_dates = [
 @click.option('--year', default=2021, type=int, help='Year of the data')
 @click.option('--month', default=1, type=int, help='Month of the data')
 @click.option('--chunksize', default=10000, type=int, help='Chunk size for ingestion')
-@click.option('--target-table', default='yellow_taxi_data', help='Target table name')
+@click.option('--target-table', default='green_taxi_data', help='Target table name')
 
 def run(pg_user, pg_pass, pg_host, pg_port, pg_db, year, month, chunksize, target_table):
     
-    prefix = 'https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow'
-    url = f"{prefix}/yellow_tripdata_{year}-{month:02d}.csv.gz"
+    prefix = 'https://github.com/DataTalksClub/nyc-tlc-data/releases/download/green'
+    url = f"{prefix}/green_tripdata_{year}-{month:02d}.csv.gz"
 
     engine = create_engine(f'postgresql://{pg_user}:{pg_pass}@{pg_host}:{pg_port}/{pg_db}')
     
